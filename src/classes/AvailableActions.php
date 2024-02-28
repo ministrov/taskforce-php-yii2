@@ -35,6 +35,17 @@ class AvailableActions {
     $this->clientId = $clientId;
   }
 
+  public function getStatusMap()
+  {
+    return [
+      self::STATUS_NEW => 'Новое',
+      self::STATUS_CANCEL => 'Отмена',
+      self::STATUS_EXPIRED => '',
+      self::STATUS_COMPLETE => '',
+      self::STATUS_IN_PROGRESS => '',
+    ];
+  }
+
   public function setStatus($status)
   {
     $status = $this->status;

@@ -14,3 +14,7 @@ class Greeting
     return "I would like to $greeting you";
   }
 }
+
+$greeting = new Greeting("Hello World!");
+
+echo $greeting->getGreeting("Greeting");
