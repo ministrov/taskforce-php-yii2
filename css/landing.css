@@ -28,17 +28,17 @@ footer {
 
 @font-face {
   font-family: MyriadPro;
-  src: url(../fonts/MyriadPro-Light.woff);
+  src: url("../fonts/MyriadPro-Light.woff");
   font-weight: 300; }
 
 @font-face {
   font-family: MyriadPro;
-  src: url(../fonts/MyriadPro-Regular.ttf);
+  src: url("../fonts/MyriadPro-Regular.ttf");
   font-weight: 400; }
 
 @font-face {
   font-family: MyriadPro;
-  src: url(../fonts/MyriadPro-Semibold.woff);
+  src: url("../fonts/MyriadPro-Semibold.woff");
   font-weight: 600; }
 
 .visually-hidden {
