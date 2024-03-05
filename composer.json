@@ -1,4 +1,7 @@
 {
-    "name": "new/taskforce",
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "taskforce\\": "src/"
+        }
+    }
 }
