@@ -1,5 +1,7 @@
 <?php
-// namespace logic;
+namespace taskforce\logic;
+
+use DateTime;
 
 class AvailableActions {
   const STATUS_NEW = 'new';
@@ -31,6 +33,15 @@ class AvailableActions {
 
     $this->performerId = $performedId;
     $this->clientId = $clientId;
+  }
+
+  public function setFinishDate(DateTime $dt): void
+  {
+    $curDate = new DateTime();
+
+    if ($dt > $curDate) {
+      print_r("Time is : $curDate");
+    }
   }
 
   /**

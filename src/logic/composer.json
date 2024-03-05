@@ -1,0 +1,17 @@
+{
+    "name": "taskforce/taskforce",
+    "description": "desc",
+    "minimum-stability": "dev",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Anton Zhilin",
+            "email": "antonzhilin@yandex.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "taskforce\\": "src/"
+        }
+    }
+}
