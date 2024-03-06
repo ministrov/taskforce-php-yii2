@@ -1,5 +1,7 @@
 <?php
-// namespace logic;
+namespace taskforce\logic;
+
+use DateTime;
 
 class AvailableActions {
   const STATUS_NEW = 'new';
@@ -27,14 +29,23 @@ class AvailableActions {
 
   public function __construct(string $status, int $clientId, ?int $performedId = null)
   {
-    $this->setStatus($status);
+    // $this->setStatus($status);
 
     $this->performerId = $performedId;
     $this->clientId = $clientId;
   }
 
+  public function setFinishDate(DateTime $dt): void
+  {
+    $curDate = new DateTime();
+
+    if ($dt > $curDate) {
+      print_r("Time is : $curDate");
+    }
+  }
+
   /**
-   * 
+   * Возвращает массив необходимых статусов 
    * @return array
   */
   public function getStatusMap(): array
@@ -49,8 +60,9 @@ class AvailableActions {
   }
 
   /**
+   * Возвращает массив необходимых действий
    * @return array
-  */
+   */
   public function getActionsMap(): array
   {
     return [
@@ -62,8 +74,8 @@ class AvailableActions {
   }
 
   /**
-   * @param string $action
    * 
+   * @param string $action
    * @return string|null
   */
   public function getNextStatus(string $action): ?string
@@ -88,20 +100,20 @@ class AvailableActions {
    * 
    * @return [type]
   */
-  public function setStatus($status): void
-  {
-    $availableStatus = [
-      self::STATUS_NEW, 
-      self::STATUS_CANCEL, 
-      self::STATUS_COMPLETE, 
-      self::STATUS_EXPIRED, 
-      self::STATUS_IN_PROGRESS
-    ];
+  // public function setStatus($status): void
+  // {
+  //   $availableStatus = [
+  //     self::STATUS_NEW, 
+  //     self::STATUS_CANCEL, 
+  //     self::STATUS_COMPLETE, 
+  //     self::STATUS_EXPIRED, 
+  //     self::STATUS_IN_PROGRESS
+  //   ];
 
-    if (is_array($status, $availableStatus)) {
-      $this->status = $status;
-    }
-  }
+  //   if (is_array($status, $availableStatus)) {
+  //     $this->status = $status;
+  //   }
+  // }
 
   /**
    * Возвращает действия, доступные для указанного статуса
