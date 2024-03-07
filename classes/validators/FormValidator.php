@@ -1,15 +1,26 @@
 <?php
 namespace taskforce\validators;
 
-class FormValidator
+interface FieldValidator
+{
+  public function getErrors();
+  public function validate();
+  public function validateField($name);
+}
+
+class FormValidator implements FieldValidator
 {
   const METHOD = 'post';
-  public $formData = [];
-  public $requiredFields = [];
+  public $formData;
+  public $requiredFields;
 
   private $errors = [];
 
-  public function __construct($formData = [], $requiredFields = []) {}
+  public function __construct($formData = [], $requiredFields = []) 
+  {
+    $this->formData = $formData;
+    $this->requiredFields = $requiredFields;
+  }
 
   public function getErrors()
   {
@@ -18,11 +29,11 @@ class FormValidator
 
   public function validate() 
   {
-    $fieds = array_merge($this->requiredFields, array_keys($this->formData));
+    $fields = array_merge($this->requiredFields, array_keys($this->formData));
     $errors = [];
 
-    foreach ($fieds as $fied) {
-      $errors[$fied] = $this->validateField($fied);
+    foreach ($fields as $field) {
+      $errors[$filed] = $this->validateField($field);
     }
 
     $this->errors = array_filter($errors);
