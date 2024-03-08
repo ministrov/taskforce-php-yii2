@@ -8,13 +8,13 @@ use taskforce\concrete\ConcreteClass1;
 
 $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
-var_dump('new -> performer', $strategy->getStatusMap());
+// var_dump('new -> performer', $strategy->getStatusMap());
 // var_dump('new -> client,alien', $strategy->getStatusMap());
 // var_dump('new -> client,same', $strategy->getStatusMap());
 
 // var_dump('proceed -> performer,same', $strategy->getStatusMap());
 
-// assert($strategy->getNextStatus(AvailableActions::ACTION_CANCEL) == AvailableActions::STATUS_CANCEL, 'cancel action');
+assert($strategy->getNextStatus(AvailableActions::ACTION_CANCEL) == AvailableActions::STATUS_CANCEL, 'cancel action');
 // print_r($strategy->getStatusMap());
 
 // print("<br>");
