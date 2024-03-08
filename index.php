@@ -4,6 +4,8 @@ ini_set('assert.exception', 1);
 
 use taskforce\logic\AvailableActions;
 
+use taskforce\concrete\ConcreteClass1;
+
 $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
 var_dump('new -> performer', $strategy->getStatusMap());
@@ -30,3 +32,7 @@ var_dump('new -> performer', $strategy->getStatusMap());
 // print("<br>");
 
 // echo $how_it_going->getGreeting("How is it going!");
+
+$class1 = new ConcreteClass1;
+$class1->printOut();
+echo $class1->prefixValue('FOO_') . "\n";

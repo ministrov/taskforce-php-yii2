@@ -1,7 +1,7 @@
 <?php 
 namespace taskforce\greetings;
 
-class Greeting 
+class Greeting
 {
   public $greeting;
 
