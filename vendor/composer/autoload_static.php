@@ -16,7 +16,7 @@ class ComposerStaticInit9bd25acb96cde9ac8c7fa3c8487f344d
     public static $prefixDirsPsr4 = array (
         'taskforce\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/classes',
         ),
     );
 

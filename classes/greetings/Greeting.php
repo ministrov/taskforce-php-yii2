@@ -1,17 +1,22 @@
 <?php 
 namespace taskforce\greetings;
 
-class Greeting 
+class Greeting
 {
-  public $greeting = null;
+  public $greeting;
 
-  public function __construct($greeting)
+  public function __construct($greeting = null)
   {
     $this->greeting = $greeting;
   }
 
   public function getGreeting($greeting)
   {
-    return "I would like to $greeting you";
+    return $this->$greeting;
+  }
+
+  public function __toString()
+  {
+    return $this->$greeting;
   }
 }

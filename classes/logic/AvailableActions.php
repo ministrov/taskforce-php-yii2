@@ -29,7 +29,7 @@ class AvailableActions {
 
   public function __construct(string $status, int $clientId, ?int $performedId = null)
   {
-    // $this->setStatus($status);
+    $this->setStatus($status);
 
     $this->performerId = $performedId;
     $this->clientId = $clientId;
@@ -44,25 +44,15 @@ class AvailableActions {
     }
   }
 
-  /**
-   * Возвращает массив необходимых статусов 
-   * @return array
-  */
-  public function getStatusMap(): array
+  public function getAvailableActions(string $role, int $id)
   {
-    return [
-      self::STATUS_NEW => 'Новое',
-      self::STATUS_CANCEL => 'Отменено',
-      self::STATUS_EXPIRED => 'Провалено',
-      self::STATUS_COMPLETE => 'Выполнено',
-      self::STATUS_IN_PROGRESS => 'В работе',
-    ];
+    $statusActions = $this->statusAllowedActions()[$this->$status];
   }
 
   /**
    * Возвращает массив необходимых действий
    * @return array
-   */
+  */
   public function getActionsMap(): array
   {
     return [
@@ -100,33 +90,60 @@ class AvailableActions {
    * 
    * @return [type]
   */
-  // public function setStatus($status): void
-  // {
-  //   $availableStatus = [
-  //     self::STATUS_NEW, 
-  //     self::STATUS_CANCEL, 
-  //     self::STATUS_COMPLETE, 
-  //     self::STATUS_EXPIRED, 
-  //     self::STATUS_IN_PROGRESS
-  //   ];
+  public function setStatus($status): void
+  {
+    $availableStatus = [
+      self::STATUS_NEW, 
+      self::STATUS_CANCEL, 
+      self::STATUS_COMPLETE, 
+      self::STATUS_EXPIRED, 
+      self::STATUS_IN_PROGRESS
+    ];
 
-  //   if (is_array($status, $availableStatus)) {
-  //     $this->status = $status;
-  //   }
-  // }
+    if (in_array($status, $availableStatus)) {
+      $this->status = $status;
+    }
+  }
 
   /**
-   * Возвращает действия, доступные для указанного статуса
+   * Возвращает действия доступные для каждой роли
+   * @return array
+  */
+  private function roleAllowedActions()
+  {
+
+  }
+
+  /**
+   * Возвращает действия, доступные для каждого статуса статуса
    * @param string $status
    * @return array
   */
-  private function setAllowedStatus(string $status): array
+  private function statusAllowedActions(): array
   {
     $map = [
-      self::STATUS_IN_PROGRESS => [self::ACTION_DENY, self::ACTION_COMPLETE],
-      self::STATUS_NEW => [self::ACTION_CANCEL, self::ACTION_RESPONSE]
+      self::STATUS_IN_PROGRESS => [],
+      self::STATUS_NEW => [],
+      self::STATUS_COMPLETE => [],
+      self::STATUS_EXPIRED => [],
+      self::STATUS_CANCEL => [],
     ];
 
-    return $map[$status] ?? [];
+    return $map;
+  }
+
+  /**
+   * Возвращает массив необходимых статусов 
+   * @return array
+  */
+  private function getStatusMap(): array
+  {
+    return [
+      self::STATUS_NEW => 'Новое',
+      self::STATUS_CANCEL => 'Отменено',
+      self::STATUS_EXPIRED => 'Провалено',
+      self::STATUS_COMPLETE => 'Выполнено',
+      self::STATUS_IN_PROGRESS => 'В работе',
+    ];
   }
 }

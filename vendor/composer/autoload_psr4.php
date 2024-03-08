@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'taskforce\\' => array($baseDir . '/src'),
+    'taskforce\\' => array($baseDir . '/classes'),
 );
