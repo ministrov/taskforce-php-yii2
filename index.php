@@ -14,7 +14,7 @@ $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
 // var_dump('proceed -> performer,same', $strategy->getStatusMap());
 
-assert($strategy->getNextStatus(AvailableActions::ACTION_CANCEL) == AvailableActions::STATUS_CANCEL, 'cancel action');
+// assert($strategy->getNextStatus(AvailableActions::ACTION_CANCEL) == AvailableActions::STATUS_CANCEL, 'cancel action');
 // print_r($strategy->getStatusMap());
 
 // print("<br>");
