@@ -46,7 +46,8 @@ class AvailableActions {
 
   public function getAvailableActions(string $role, int $id)
   {
-    $statusActions = $this->statusAllowedActions()[$this->$status];
+    // $statusActions = $this->statusAllowedActions()[$this->$status];
+    $roleActions = $this->roleAllowedActions()[$role];
   }
 
   /**

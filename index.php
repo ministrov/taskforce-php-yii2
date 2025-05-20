@@ -37,21 +37,73 @@ $class1 = new ConcreteClass1;
 $class1->printOut();
 echo $class1->prefixValue('FOO_') . "\n";
 
-class Product {
+class Product
+{
   public string $name;
   public string $price;
 
 
-  function __construct(string $name, float $price) 
+  function __construct(string $name, float $price)
   {
     $this->name = $name;
     $this->price = $price;
   }
 
-  public function getInfo() {
+  public function getInfo()
+  {
     return "Product: {$this->name}, Price: {$this->price}";
   }
 }
 
 $product = new Product('Notebook', 888.8);
 echo $product->getInfo();
+
+class FormValidator
+{
+  public $formData = [];
+  public $requiredFields = [];
+
+  private $errors = [];
+
+  public function __construct($formData, $requiredFields)
+  {
+    $this->formData = $formData;
+    $this->requiredFields = $requiredFields;
+  }
+
+  public function validate()
+  {
+    $fields = array_merge($this->requiredFields, array_keys($this->formData));
+    $errors = [];
+
+    foreach ($fields as $field) {
+      $errors[$field] = $this->validateFilled($field);
+    }
+
+    $this->errors = array_filter($errors);
+
+    return empty($this->errors);
+  }
+
+  public function getErrors()
+  {
+    return $this->errors;
+  }
+
+  public function validateFilled($name)
+  {
+    if (empty($this->formData[$name])) {
+      return "Это поле должно быть заполнено";
+    }
+
+    return null;
+  }
+}
+
+$formValidator = new FormValidator($_POST, ['title', 'description']);
+
+$isFormValid = $formValidator->validate();
+
+if (!$isFormValid) {
+  $errors = $formValidator->getErrors();
+}
