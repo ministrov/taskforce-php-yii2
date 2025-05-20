@@ -12,11 +12,11 @@ class Greeting
 
   public function getGreeting($greeting)
   {
-    return $this->$greeting;
+    return "Greeting: {$this->$greeting}";
   }
 
-  public function __toString()
-  {
-    return $this->$greeting;
-  }
+  // public function __toString()
+  // {
+  //   return $this->$greeting;
+  // }
 }

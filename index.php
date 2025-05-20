@@ -6,6 +6,8 @@ use taskforce\logic\AvailableActions;
 
 use taskforce\concrete\ConcreteClass1;
 
+use taskforce\greetings\Greeting;
+
 $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
 // var_dump('new -> performer', $strategy->getStatusMap());
@@ -20,6 +22,9 @@ $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 // print("<br>");
 
 // print_r($how_it_going->getGreeting("How is it going!"));
+
+$new_greeting = new Greeting("We love to eat a lot!!!))");
+echo $new_greeting->getGreeting('sdfdf');
 
 // print("<br>");
 
