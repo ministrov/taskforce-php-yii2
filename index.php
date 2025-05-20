@@ -36,3 +36,22 @@ $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 $class1 = new ConcreteClass1;
 $class1->printOut();
 echo $class1->prefixValue('FOO_') . "\n";
+
+class Product {
+  public string $name;
+  public string $price;
+
+
+  function __construct(string $name, float $price) 
+  {
+    $this->name = $name;
+    $this->price = $price;
+  }
+
+  public function getInfo() {
+    return "Product: {$this->name}, Price: {$this->price}";
+  }
+}
+
+$product = new Product('Notebook', 888.8);
+echo $product->getInfo();

@@ -33,7 +33,7 @@ class FormValidator implements FieldValidator
     $errors = [];
 
     foreach ($fields as $field) {
-      $errors[$filed] = $this->validateField($field);
+      $errors[$field] = $this->validateField($field);
     }
 
     $this->errors = array_filter($errors);
