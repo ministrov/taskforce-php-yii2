@@ -4,8 +4,6 @@ ini_set('assert.exception', 1);
 
 use taskforce\logic\AvailableActions;
 
-use taskforce\user\User;
-
 use taskforce\product\Product;
 
 // $timeNow = new DateTime();
@@ -20,6 +18,23 @@ $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 // var_dump('new -> client,alien', $strategy->getStatusMap());
 // var_dump('new -> client,same', $strategy->getStatusMap());
 
+class User
+{
+  public string $name;
+  protected string $email;
+  private string $password;
+
+  public function setEmail(string $email): void
+  {
+    $this->email = $email;
+  }
+
+  public function getEmail()
+  {
+    return $this->email;
+  }
+}
+
 $user = new User();
 $user->name = 'Andrey';
 $user->setEmail('andrey@mail.ro');
@@ -28,8 +43,6 @@ echo $user->getEmail();
 // var_dump('proceed -> performer,same', $strategy->getStatusMap());
 
 // assert($strategy->getNextStatus(AvailableActions::ACTION_CANCEL) == AvailableActions::STATUS_CANCEL, 'cancel action');
-// print_r($strategy->getStatusMap());
-// print_r($timeNow->setStatus());
 
 // print("<br>");
 
@@ -49,3 +62,28 @@ print_r($product->getInfo());
 // print("<br>");
 
 // echo $how_it_going->getGreeting("How is it going!");
+
+class Animal
+{
+  public function makeSound(): string
+  {
+    return "Звук животного";
+  }
+}
+
+class Dog extends Animal
+{
+  public function makeSound(): string
+  {
+    return "Гав!";
+  }
+
+  public function wagTail(): string
+  {
+    return "Виляю хвостом!";
+  }
+}
+
+$dog = new Dog();
+echo $dog->makeSound(); // Гав!
+echo $dog->wagTail();  // Виляю хвостом!
