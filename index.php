@@ -8,7 +8,7 @@ use taskforce\logic\AvailableActions;
 
 // use taskforce\greetings\Greeting;
 
-// use taskforce\product\Product;
+use taskforce\product\Product;
 
 // $timeNow = new DateTime();
 
@@ -29,6 +29,9 @@ $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 // print_r($timeNow->setStatus());
 
 // print("<br>");
+
+$product = new Product('Coffee', 'Brazilian Taste', 1200);
+print_r($product->getInfo());
 
 // print_r($how_it_going->getGreeting("How is it going!"));
 
