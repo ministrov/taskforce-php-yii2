@@ -4,9 +4,7 @@ ini_set('assert.exception', 1);
 
 use taskforce\logic\AvailableActions;
 
-// use taskforce\concrete\ConcreteClass1;
-
-// use taskforce\greetings\Greeting;
+use taskforce\user\User;
 
 use taskforce\product\Product;
 
@@ -21,6 +19,11 @@ $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 // var_dump('new -> performer', $strategy->getStatusMap());
 // var_dump('new -> client,alien', $strategy->getStatusMap());
 // var_dump('new -> client,same', $strategy->getStatusMap());
+
+$user = new User();
+$user->name = 'Andrey';
+$user->setEmail('andrey@mail.ro');
+echo $user->getEmail();
 
 // var_dump('proceed -> performer,same', $strategy->getStatusMap());
 
