@@ -4,11 +4,11 @@ ini_set('assert.exception', 1);
 
 use taskforce\logic\AvailableActions;
 
-use taskforce\concrete\ConcreteClass1;
+// use taskforce\concrete\ConcreteClass1;
 
-use taskforce\greetings\Greeting;
+// use taskforce\greetings\Greeting;
 
-use taskforce\product\Product;
+// use taskforce\product\Product;
 
 // $timeNow = new DateTime();
 
@@ -32,9 +32,6 @@ $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
 // print_r($how_it_going->getGreeting("How is it going!"));
 
-$new_greeting = new Greeting("We love to eat a lot!!!))");
-echo $new_greeting->getGreeting('sdfdf');
-
 // print("<br>");
 
 // print_r($hello_world);
@@ -46,7 +43,3 @@ echo $new_greeting->getGreeting('sdfdf');
 // print("<br>");
 
 // echo $how_it_going->getGreeting("How is it going!");
-
-$class1 = new ConcreteClass1;
-$class1->printOut();
-echo $class1->prefixValue('FOO_') . "\n";
