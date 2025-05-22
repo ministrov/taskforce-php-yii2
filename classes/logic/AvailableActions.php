@@ -124,4 +124,28 @@ class AvailableActions
 
     return $map;
   }
+
+  /**
+   * Проверяет доступность каждого действия для пользователя
+   * @return array
+   */
+  private function getRightsPairs()
+  {
+    $map = [
+      self::ACTION_RESPONSE => function ($id) {
+        return $id !== $this->performerId;
+      },
+      self::ACTION_DENY => function ($id) {
+        return $id == $this->performerId;
+      },
+      self::ACTION_CANCEL => function ($id) {
+        return $id == $this->clientId;
+      },
+      self::ACTION_COMPLETE => function ($id) {
+        return $id == $this->clientId;
+      }
+    ];
+
+    return $map;
+  }
 }
