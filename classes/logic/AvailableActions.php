@@ -106,4 +106,22 @@ class AvailableActions
 
     return $map;
   }
+
+  /**
+   * Возвращает действия, доступные для каждого статуса
+   * @return array
+   */
+
+  private function statusAllowedActions()
+  {
+    $map = [
+      self::STATUS_CANCEL => [],
+      self::STATUS_COMPLETE => [],
+      self::STATUS_IN_PROGRESS => [self::ACTION_DENY, self::ACTION_COMPLETE],
+      self::STATUS_NEW => [self::ACTION_CANCEL, self::ACTION_RESPONSE],
+      self::STATUS_EXPIRED => []
+    ];
+
+    return $map;
+  }
 }
