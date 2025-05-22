@@ -15,6 +15,9 @@ class AvailableActions {
   const ACTION_DENY = 'act_deny';
   const ACTION_COMPLETE = 'act_complete';
 
+  const ROLE_CUSTOMER = 'customer';
+  const ROLE_PERFORMER = 'performer';
+
   private ?int $performerId;
   private int $clientId;
 
