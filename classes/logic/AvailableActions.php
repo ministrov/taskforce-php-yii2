@@ -41,19 +41,28 @@ class AvailableActions
     $this->clientId = $clientId;
   }
 
-  public function setFinishDate(DateTime $dt): void
+  public function setFinishDate(DateTime $dt)
   {
     $curDate = new DateTime();
 
     if ($dt > $curDate) {
-      print_r("Time is : $curDate");
+      $this->finishDate = $dt;
     }
   }
 
   public function getAvailableActions(string $role, int $id)
   {
-    // $statusActions = $this->statusAllowedActions()[$this->$status];
+    $statusActions = $this->statusAllowedActions()[$this->status];
     $roleActions = $this->roleAllowedActions()[$role];
+    // $rightRestrictions = $this->getRightsPairs();
+
+    $allowedActions = array_intersect($statusActions, $roleActions);
+
+    // $allowedActions = array_filter($allowedActions, function ($action) use ($rightRestrictions, $id) {
+    //   return $rightRestrictions[$action]($id);
+    // });
+
+    return array_values($allowedActions);
   }
 
   /**
