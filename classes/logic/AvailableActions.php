@@ -77,6 +77,21 @@ class AvailableActions
     return $map[$action];
   }
 
+  public function setStatus(string $status)
+  {
+    $availableStatuses = [
+      self::STATUS_NEW,
+      self::STATUS_IN_PROGRESS,
+      self::STATUS_CANCEL,
+      self::STATUS_COMPLETE,
+      self::STATUS_EXPIRED
+    ];
+
+    if (in_array($status, $availableStatuses)) {
+      $this->status = $status;
+    }
+  }
+
   /**
    * Возвращает массив необходимых действий
    * @return array
@@ -112,26 +127,6 @@ class AvailableActions
   //   //   return null;
   //   // }
   // }
-
-  /**
-   * @param mixed $status
-   * 
-   * @return [type]
-   */
-  public function setStatus($status): void
-  {
-    $availableStatus = [
-      self::STATUS_NEW,
-      self::STATUS_CANCEL,
-      self::STATUS_COMPLETE,
-      self::STATUS_EXPIRED,
-      self::STATUS_IN_PROGRESS
-    ];
-
-    if (in_array($status, $availableStatus)) {
-      $this->status = $status;
-    }
-  }
 
   /**
    * Возвращает действия доступные для каждой роли
