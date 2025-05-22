@@ -1,150 +1,164 @@
 <?php
+
 namespace taskforce\logic;
 
 use DateTime;
 
-class AvailableActions {
+class AvailableActions
+{
   const STATUS_NEW = 'new';
   const STATUS_IN_PROGRESS = 'proceed';
   const STATUS_CANCEL = 'cancel';
   const STATUS_COMPLETE = 'complete';
   const STATUS_EXPIRED = 'exired';
-  
+
   const ACTION_RESPONSE = 'act_response';
   const ACTION_CANCEL = 'act_cancel';
   const ACTION_DENY = 'act_deny';
   const ACTION_COMPLETE = 'act_complete';
 
+  const ROLE_PERFORMER = 'performer';
+  const ROLE_CLIENT = 'customer';
+
   private ?int $performerId;
   private int $clientId;
 
   private $status = null;
+  private $finishDate = null;
 
   /**
    * AvailableActions strategy constructor
    * @param string $status;
    * @param int|null $performedId;
    * @param int $clientId;
-  */
+   */
 
-  public function __construct(string $status, int $clientId, ?int $performedId = null)
+  public function __construct(string $status, ?int $performerId, int $clientId)
   {
     $this->setStatus($status);
 
-    $this->performerId = $performedId;
+    $this->performerId = $performerId;
     $this->clientId = $clientId;
   }
 
-  public function setFinishDate(DateTime $dt): void
+  public function setFinishDate(DateTime $dt)
   {
     $curDate = new DateTime();
 
     if ($dt > $curDate) {
-      print_r("Time is : $curDate");
+      $this->finishDate = $dt;
     }
   }
 
   public function getAvailableActions(string $role, int $id)
   {
-    // $statusActions = $this->statusAllowedActions()[$this->$status];
+    $statusActions = $this->statusAllowedActions()[$this->status];
     $roleActions = $this->roleAllowedActions()[$role];
+    $rightRestrictions = $this->getRightsPairs();
+
+    $allowedActions = array_intersect($statusActions, $roleActions);
+
+    $allowedActions = array_filter($allowedActions, function ($action) use ($rightRestrictions, $id) {
+      return $rightRestrictions[$action]($id);
+    });
+
+    return array_values($allowedActions);
   }
 
-  /**
-   * Возвращает массив необходимых действий
-   * @return array
-  */
-  public function getActionsMap(): array
-  {
-    return [
-      self::ACTION_CANCEL => 'Отменить',
-      self::ACTION_RESPONSE => 'Откликнуться',
-      self::ACTION_COMPLETE => 'Выполнено',
-      self::ACTION_DENY => 'Отказаться'
-    ];
-  }
-
-  /**
-   * 
-   * @param string $action
-   * @return string|null
-  */
-  public function getNextStatus(string $action): ?string
+  public function getNextStatus(string $action)
   {
     $map = [
-      self::ACTION_COMPLETE => self::ACTION_COMPLETE,
-      self::ACTION_CANCEL => self::ACTION_CANCEL,
-      self::ACTION_DENY => self::ACTION_CANCEL
+      self::ACTION_COMPLETE => self::STATUS_COMPLETE,
+      self::ACTION_CANCEL => self::STATUS_CANCEL,
+      self::ACTION_DENY => self::STATUS_CANCEL,
+      self::ACTION_RESPONSE => null
     ];
 
-    return $map[$action] ?? null;
-
-    // if (isset($map[$action])) {
-    //   return $map[$action];
-    // } else {
-    //   return null;
-    // }
+    return $map[$action];
   }
 
-  /**
-   * @param mixed $status
-   * 
-   * @return [type]
-  */
-  public function setStatus($status): void
+  public function setStatus(string $status)
   {
-    $availableStatus = [
-      self::STATUS_NEW, 
-      self::STATUS_CANCEL, 
-      self::STATUS_COMPLETE, 
-      self::STATUS_EXPIRED, 
-      self::STATUS_IN_PROGRESS
+    $availableStatuses = [
+      self::STATUS_NEW,
+      self::STATUS_IN_PROGRESS,
+      self::STATUS_CANCEL,
+      self::STATUS_COMPLETE,
+      self::STATUS_EXPIRED
     ];
 
-    if (in_array($status, $availableStatus)) {
+    if (in_array($status, $availableStatuses)) {
       $this->status = $status;
     }
   }
 
   /**
-   * Возвращает действия доступные для каждой роли
+   * Возвращает действия, доступные для каждой роли
    * @return array
-  */
+   */
+
   private function roleAllowedActions()
   {
-
-  }
-
-  /**
-   * Возвращает действия, доступные для каждого статуса статуса
-   * @param string $status
-   * @return array
-  */
-  private function statusAllowedActions(): array
-  {
     $map = [
-      self::STATUS_IN_PROGRESS => [],
-      self::STATUS_NEW => [],
-      self::STATUS_COMPLETE => [],
-      self::STATUS_EXPIRED => [],
-      self::STATUS_CANCEL => [],
+      self::ROLE_CLIENT => [self::ACTION_CANCEL, self::ACTION_COMPLETE],
+      self::ROLE_PERFORMER => [self::ACTION_RESPONSE, self::ACTION_DENY]
     ];
 
     return $map;
   }
 
   /**
-   * Возвращает массив необходимых статусов 
+   * Возвращает действия, доступные для каждого статуса
    * @return array
-  */
-  private function getStatusMap(): array
+   */
+
+  private function statusAllowedActions()
   {
-    return [
-      self::STATUS_NEW => 'Новое',
-      self::STATUS_CANCEL => 'Отменено',
-      self::STATUS_EXPIRED => 'Провалено',
-      self::STATUS_COMPLETE => 'Выполнено',
-      self::STATUS_IN_PROGRESS => 'В работе',
+    $map = [
+      self::STATUS_CANCEL => [],
+      self::STATUS_COMPLETE => [],
+      self::STATUS_IN_PROGRESS => [self::ACTION_DENY, self::ACTION_COMPLETE],
+      self::STATUS_NEW => [self::ACTION_CANCEL, self::ACTION_RESPONSE],
+      self::STATUS_EXPIRED => []
     ];
+
+    return $map;
+  }
+
+  /**
+   * Проверяет доступность каждого действия для пользователя
+   * @return array
+   */
+  private function getRightsPairs()
+  {
+    $map = [
+      self::ACTION_RESPONSE => function ($id) {
+        return $id !== $this->performerId;
+      },
+      self::ACTION_DENY => function ($id) {
+        return $id == $this->performerId;
+      },
+      self::ACTION_CANCEL => function ($id) {
+        return $id == $this->clientId;
+      },
+      self::ACTION_COMPLETE => function ($id) {
+        return $id == $this->clientId;
+      }
+    ];
+
+    return $map;
+  }
+
+  private function getStatusMap()
+  {
+    $map = [
+      self::STATUS_NEW => [self::STATUS_EXPIRED, self::STATUS_CANCEL],
+      self::STATUS_IN_PROGRESS => [self::STATUS_CANCEL, self::STATUS_COMPLETE],
+      self::STATUS_CANCEL => [],
+      self::STATUS_COMPLETE => [],
+      self::STATUS_EXPIRED => [self::STATUS_CANCEL]
+    ];
+
+    return $map;
   }
 }
