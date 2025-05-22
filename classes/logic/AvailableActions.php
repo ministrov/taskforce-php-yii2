@@ -52,17 +52,17 @@ class AvailableActions
 
   public function getAvailableActions(string $role, int $id)
   {
-    $statusActions = $this->statusAllowedActions()[$this->status];
-    $roleActions = $this->roleAllowedActions()[$role];
+    // $statusActions = $this->statusAllowedActions()[$this->status];
+    // $roleActions = $this->roleAllowedActions()[$role];
     // $rightRestrictions = $this->getRightsPairs();
 
-    $allowedActions = array_intersect($statusActions, $roleActions);
+    // $allowedActions = array_intersect($statusActions, $roleActions);
 
     // $allowedActions = array_filter($allowedActions, function ($action) use ($rightRestrictions, $id) {
     //   return $rightRestrictions[$action]($id);
     // });
 
-    return array_values($allowedActions);
+    // return array_values($allowedActions);
   }
 
   public function getNextStatus(string $action)
@@ -93,77 +93,17 @@ class AvailableActions
   }
 
   /**
-   * Возвращает массив необходимых действий
+   * Возвращает действия, доступные для каждой роли
    * @return array
    */
-  public function getActionsMap(): array
-  {
-    return [
-      self::ACTION_CANCEL => 'Отменить',
-      self::ACTION_RESPONSE => 'Откликнуться',
-      self::ACTION_COMPLETE => 'Выполнено',
-      self::ACTION_DENY => 'Отказаться'
-    ];
-  }
 
-  // /**
-  //  * 
-  //  * @param string $action
-  //  * @return string|null
-  //  */
-  // public function getNextStatus(string $action): ?string
-  // {
-  //   $map = [
-  //     self::ACTION_COMPLETE => self::ACTION_COMPLETE,
-  //     self::ACTION_CANCEL => self::ACTION_CANCEL,
-  //     self::ACTION_DENY => self::ACTION_CANCEL
-  //   ];
-
-  //   return $map[$action] ?? null;
-
-  //   // if (isset($map[$action])) {
-  //   //   return $map[$action];
-  //   // } else {
-  //   //   return null;
-  //   // }
-  // }
-
-  /**
-   * Возвращает действия доступные для каждой роли
-   * @return array
-   */
-  private function roleAllowedActions() {}
-
-  /**
-   * Возвращает действия, доступные для каждого статуса статуса
-   * @param string $status
-   * @return array
-   */
-  private function statusAllowedActions(): array
+  private function getAllowedActions()
   {
     $map = [
-      self::STATUS_IN_PROGRESS => [],
-      self::STATUS_NEW => [],
-      self::STATUS_COMPLETE => [],
-      self::STATUS_EXPIRED => [],
-      self::STATUS_CANCEL => [],
+      self::ROLE_CLIENT => [self::ACTION_CANCEL, self::ACTION_COMPLETE],
+      self::ROLE_PERFORMER => [self::ACTION_RESPONSE, self::ACTION_DENY]
     ];
 
     return $map;
-  }
-
-  /**
-   * Возвращает массив необходимых статусов 
-   * @return array
-   */
-  private function getStatusMap(): array
-  {
-    return [
-      self::STATUS_NEW => 'Новое',
-      self::STATUS_CANCEL => 'Отменено',
-      self::STATUS_EXPIRED => 'Провалено',
-      self::STATUS_COMPLETE => 'Выполнено',
-      self::STATUS_IN_PROGRESS => 'В работе',
-    ];
   }
 }
