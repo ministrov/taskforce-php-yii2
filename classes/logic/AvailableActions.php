@@ -65,6 +65,18 @@ class AvailableActions
     return array_values($allowedActions);
   }
 
+  public function getNextStatus(string $action)
+  {
+    $map = [
+      self::ACTION_COMPLETE => self::STATUS_COMPLETE,
+      self::ACTION_CANCEL => self::STATUS_CANCEL,
+      self::ACTION_DENY => self::STATUS_CANCEL,
+      self::ACTION_RESPONSE => null
+    ];
+
+    return $map[$action];
+  }
+
   /**
    * Возвращает массив необходимых действий
    * @return array
@@ -79,27 +91,27 @@ class AvailableActions
     ];
   }
 
-  /**
-   * 
-   * @param string $action
-   * @return string|null
-   */
-  public function getNextStatus(string $action): ?string
-  {
-    $map = [
-      self::ACTION_COMPLETE => self::ACTION_COMPLETE,
-      self::ACTION_CANCEL => self::ACTION_CANCEL,
-      self::ACTION_DENY => self::ACTION_CANCEL
-    ];
+  // /**
+  //  * 
+  //  * @param string $action
+  //  * @return string|null
+  //  */
+  // public function getNextStatus(string $action): ?string
+  // {
+  //   $map = [
+  //     self::ACTION_COMPLETE => self::ACTION_COMPLETE,
+  //     self::ACTION_CANCEL => self::ACTION_CANCEL,
+  //     self::ACTION_DENY => self::ACTION_CANCEL
+  //   ];
 
-    return $map[$action] ?? null;
+  //   return $map[$action] ?? null;
 
-    // if (isset($map[$action])) {
-    //   return $map[$action];
-    // } else {
-    //   return null;
-    // }
-  }
+  //   // if (isset($map[$action])) {
+  //   //   return $map[$action];
+  //   // } else {
+  //   //   return null;
+  //   // }
+  // }
 
   /**
    * @param mixed $status
