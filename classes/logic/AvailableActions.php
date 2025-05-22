@@ -52,17 +52,17 @@ class AvailableActions
 
   public function getAvailableActions(string $role, int $id)
   {
-    // $statusActions = $this->statusAllowedActions()[$this->status];
-    // $roleActions = $this->roleAllowedActions()[$role];
-    // $rightRestrictions = $this->getRightsPairs();
+    $statusActions = $this->statusAllowedActions()[$this->status];
+    $roleActions = $this->roleAllowedActions()[$role];
+    $rightRestrictions = $this->getRightsPairs();
 
-    // $allowedActions = array_intersect($statusActions, $roleActions);
+    $allowedActions = array_intersect($statusActions, $roleActions);
 
-    // $allowedActions = array_filter($allowedActions, function ($action) use ($rightRestrictions, $id) {
-    //   return $rightRestrictions[$action]($id);
-    // });
+    $allowedActions = array_filter($allowedActions, function ($action) use ($rightRestrictions, $id) {
+      return $rightRestrictions[$action]($id);
+    });
 
-    // return array_values($allowedActions);
+    return array_values($allowedActions);
   }
 
   public function getNextStatus(string $action)
@@ -97,7 +97,7 @@ class AvailableActions
    * @return array
    */
 
-  private function getAllowedActions()
+  private function roleAllowedActions()
   {
     $map = [
       self::ROLE_CLIENT => [self::ACTION_CANCEL, self::ACTION_COMPLETE],
@@ -144,6 +144,19 @@ class AvailableActions
       self::ACTION_COMPLETE => function ($id) {
         return $id == $this->clientId;
       }
+    ];
+
+    return $map;
+  }
+
+  private function getStatusMap()
+  {
+    $map = [
+      self::STATUS_NEW => [self::STATUS_EXPIRED, self::STATUS_CANCEL],
+      self::STATUS_IN_PROGRESS => [self::STATUS_CANCEL, self::STATUS_COMPLETE],
+      self::STATUS_CANCEL => [],
+      self::STATUS_COMPLETE => [],
+      self::STATUS_EXPIRED => [self::STATUS_CANCEL]
     ];
 
     return $map;
