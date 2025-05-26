@@ -1,9 +1,9 @@
 <?php
 namespace taskforce\logic\actions;
 
-use taskforce\abstract\AbstractCActions;
+use taskforce\abstract\AbstractActions;
 
-class CancelAction extends AbstractCActions
+class CancelAction extends AbstractActions
 {
   public static function getLabel()
   {

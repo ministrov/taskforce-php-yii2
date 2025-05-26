@@ -2,9 +2,9 @@
 
 namespace taskforce\logic\actions;
 
-use taskforce\abstract\AbstractCActions;
+use taskforce\abstract\AbstractActions;
 
-class CompleteAction extends AbstractCActions
+class CompleteAction extends AbstractActions
 {
   public static function getLabel()
   {
