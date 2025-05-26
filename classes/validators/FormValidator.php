@@ -11,6 +11,7 @@ interface FieldValidator
 class FormValidator implements FieldValidator
 {
   const METHOD = 'post';
+  public static $name;
   public $formData;
   public $requiredFields;
 
