@@ -57,3 +57,22 @@ CREATE TABLE `events` (
   CONSTRAINT `fk_events_tasks_1` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
   CONSTRAINT `fk_events_users_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for files
+-- ----------------------------
+DROP TABLE IF EXISTS `files`;
+CREATE TABLE `files` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `task_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
+  `dt_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `path` (`path`),
+  KEY `fk_files_tasks_1` (`task_id`),
+  KEY `fk_files_users_1` (`user_id`),
+  CONSTRAINT `fk_files_tasks_1` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
+  CONSTRAINT `fk_files_users_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
