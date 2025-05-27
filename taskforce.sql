@@ -96,3 +96,21 @@ CREATE TABLE `messages` (
   CONSTRAINT `fk_messages_users_1` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_messages_users_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for opinions
+-- ----------------------------
+DROP TABLE IF EXISTS `opinions`;
+CREATE TABLE `opinions` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) unsigned NOT NULL,
+  `performer_id` int(11) unsigned NOT NULL,
+  `rate` tinyint(1) unsigned NOT NULL,
+  `description` text NOT NULL,
+  `dt_add` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_opinions_users_1` (`owner_id`),
+  KEY `fk_opinions_users_2` (`performer_id`),
+  CONSTRAINT `fk_opinions_users_1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_opinions_users_2` FOREIGN KEY (`performer_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
