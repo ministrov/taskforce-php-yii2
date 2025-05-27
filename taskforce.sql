@@ -3,6 +3,8 @@ CREATE
 
 USE
   taskforce;
+
+SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for bookmarks
 -- ----------------------------
@@ -114,3 +116,116 @@ CREATE TABLE `opinions` (
   CONSTRAINT `fk_opinions_users_1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_opinions_users_2` FOREIGN KEY (`performer_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for replies
+-- ----------------------------
+DROP TABLE IF EXISTS `replies`;
+CREATE TABLE `replies` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `dt_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` varchar(255) NOT NULL,
+  `task_id` int(11) unsigned NOT NULL,
+  `is_approved` tinyint(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_replies_users_1` (`user_id`),
+  KEY `fk_replies_tasks_1` (`task_id`),
+  CONSTRAINT `fk_replies_tasks_1` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
+  CONSTRAINT `fk_replies_users_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for statuses
+-- ----------------------------
+DROP TABLE IF EXISTS `statuses`;
+CREATE TABLE `statuses` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tasks
+-- ----------------------------
+DROP TABLE IF EXISTS `tasks`;
+CREATE TABLE `tasks` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `category_id` int(11) unsigned NOT NULL,
+  `description` text NOT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `budget` int(10) unsigned DEFAULT NULL,
+  `expire_dt` datetime DEFAULT NULL,
+  `dt_add` datetime DEFAULT CURRENT_TIMESTAMP,
+  `client_id` int(10) unsigned NOT NULL,
+  `performer_id` int(10) unsigned DEFAULT NULL,
+  `status_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_tasks_categories_1` (`category_id`),
+  KEY `fk_tasks_statuses_1` (`status_id`),
+  CONSTRAINT `fk_tasks_categories_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `fk_tasks_statuses_1` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `city_id` int(11) unsigned NOT NULL,
+  `password` char(64) NOT NULL,
+  `dt_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `blocked` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `last_activity` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `fk_users_cities_1` (`city_id`),
+  CONSTRAINT `fk_users_cities_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for user_categories
+-- ----------------------------
+DROP TABLE IF EXISTS `user_categories`;
+CREATE TABLE `user_categories` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `category_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_user_categories_users_1` (`user_id`),
+  KEY `fk_user_categories_categories_1` (`category_id`),
+  CONSTRAINT `fk_user_categories_categories_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `fk_user_categories_users_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for user_settings
+-- ----------------------------
+DROP TABLE IF EXISTS `user_settings`;
+CREATE TABLE `user_settings` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `address` varchar(255) DEFAULT NULL,
+  `bd` date DEFAULT NULL,
+  `avatar_path` varchar(255) DEFAULT NULL,
+  `about` text,
+  `phone` char(11) DEFAULT NULL,
+  `skype` char(32) DEFAULT NULL,
+  `messenger` char(32) DEFAULT NULL,
+  `notify_new_msg` tinyint(1) unsigned DEFAULT '0',
+  `notify_new_action` tinyint(1) unsigned DEFAULT '0',
+  `notify_new_reply` tinyint(1) unsigned DEFAULT '0',
+  `opt_hide_contacts` tinyint(1) unsigned DEFAULT '0',
+  `opt_hide_me` tinyint(1) unsigned DEFAULT '0',
+  `is_performer` tinyint(1) unsigned DEFAULT '0',
+  `user_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `fk_user_settings_users_1` (`user_id`) USING BTREE,
+  UNIQUE KEY `phone` (`phone`,`skype`,`messenger`),
+  CONSTRAINT `fk_user_settings_users_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+SET FOREIGN_KEY_CHECKS=1;
