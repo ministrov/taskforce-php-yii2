@@ -5,11 +5,30 @@ USE
   taskforce;
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE users (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `city_id` int(11) unsigned NOT NULL,
+  `password` char(64) NOT NULL,
+  `dt_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `blocked` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `last_activity` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `fk_users_cities_1` (`city_id`),
+  CONSTRAINT `fk_users_cities_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- ----------------------------
 -- Table structure for bookmarks
 -- ----------------------------
 DROP TABLE IF EXISTS `bookmarks`;
-CREATE TABLE `bookmarks` (
+CREATE TABLE bookmarks (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `performer_id` int(11) unsigned NOT NULL,
@@ -24,7 +43,7 @@ CREATE TABLE `bookmarks` (
 -- Table structure for categories
 -- ----------------------------
 DROP TABLE IF EXISTS `categories`;
-CREATE TABLE `categories` (
+CREATE TABLE categories (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `icon` varchar(255) NOT NULL,
@@ -35,7 +54,7 @@ CREATE TABLE `categories` (
 -- Table structure for cities
 -- ----------------------------
 DROP TABLE IF EXISTS `cities`;
-CREATE TABLE `cities` (
+CREATE TABLE cities (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
@@ -46,7 +65,7 @@ CREATE TABLE `cities` (
 -- Table structure for events
 -- ----------------------------
 DROP TABLE IF EXISTS `events`;
-CREATE TABLE `events` (
+CREATE TABLE events (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `task_id` int(11) unsigned NOT NULL,
@@ -64,7 +83,7 @@ CREATE TABLE `events` (
 -- Table structure for files
 -- ----------------------------
 DROP TABLE IF EXISTS `files`;
-CREATE TABLE `files` (
+CREATE TABLE files (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
@@ -83,7 +102,7 @@ CREATE TABLE `files` (
 -- Table structure for messages
 -- ----------------------------
 DROP TABLE IF EXISTS `messages`;
-CREATE TABLE `messages` (
+CREATE TABLE messages (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `recipient_id` int(11) unsigned NOT NULL,
   `sender_id` int(11) unsigned NOT NULL,
@@ -103,7 +122,7 @@ CREATE TABLE `messages` (
 -- Table structure for opinions
 -- ----------------------------
 DROP TABLE IF EXISTS `opinions`;
-CREATE TABLE `opinions` (
+CREATE TABLE opinions (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `owner_id` int(11) unsigned NOT NULL,
   `performer_id` int(11) unsigned NOT NULL,
@@ -121,7 +140,7 @@ CREATE TABLE `opinions` (
 -- Table structure for replies
 -- ----------------------------
 DROP TABLE IF EXISTS `replies`;
-CREATE TABLE `replies` (
+CREATE TABLE replies (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `dt_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -139,7 +158,7 @@ CREATE TABLE `replies` (
 -- Table structure for statuses
 -- ----------------------------
 DROP TABLE IF EXISTS `statuses`;
-CREATE TABLE `statuses` (
+CREATE TABLE statuses (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
@@ -150,7 +169,7 @@ CREATE TABLE `statuses` (
 -- Table structure for tasks
 -- ----------------------------
 DROP TABLE IF EXISTS `tasks`;
-CREATE TABLE `tasks` (
+CREATE TABLE tasks (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `category_id` int(11) unsigned NOT NULL,
@@ -170,29 +189,10 @@ CREATE TABLE `tasks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for users
--- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `city_id` int(11) unsigned NOT NULL,
-  `password` char(64) NOT NULL,
-  `dt_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `blocked` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `last_activity` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  KEY `fk_users_cities_1` (`city_id`),
-  CONSTRAINT `fk_users_cities_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Table structure for user_categories
 -- ----------------------------
 DROP TABLE IF EXISTS `user_categories`;
-CREATE TABLE `user_categories` (
+CREATE TABLE user_categories (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `category_id` int(11) unsigned NOT NULL,
@@ -207,7 +207,7 @@ CREATE TABLE `user_categories` (
 -- Table structure for user_settings
 -- ----------------------------
 DROP TABLE IF EXISTS `user_settings`;
-CREATE TABLE `user_settings` (
+CREATE TABLE user_settings (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `address` varchar(255) DEFAULT NULL,
   `bd` date DEFAULT NULL,
