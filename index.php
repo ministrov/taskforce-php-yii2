@@ -20,8 +20,3 @@ echo 'new -> client,alien: ' . print_r($strategy->getAvailableActions(AvailableA
 echo 'new -> client,same: ' . print_r($strategy->getAvailableActions(AvailableActions::ROLE_CLIENT, 1), true) . '<br>';
 
 echo 'proceed -> performer,same: ' . print_r($strategy->getAvailableActions(AvailableActions::ROLE_PERFORMER, 3), true) . '<br>';
-
-// echo 'Form data: ' . print_r($formValidator->formData, true) . '<br>';
-
-// assert($strategy->getNextStatus(AvailableActions::ACTION_CANCEL) == AvailableActions::STATUS_CANCEL, 'cancel action');
-
