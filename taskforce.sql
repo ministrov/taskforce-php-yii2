@@ -6,8 +6,6 @@ CREATE
 USE
   taskforce;
 
-SET FOREIGN_KEY_CHECKS=0;
-
 -- ----------------------------
 -- Table structure for cities
 -- ----------------------------
@@ -17,7 +15,7 @@ CREATE TABLE cities (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for categories
@@ -28,7 +26,7 @@ CREATE TABLE categories (
   `name` varchar(255) NOT NULL,
   `icon` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for statuses
@@ -39,7 +37,7 @@ CREATE TABLE statuses (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for users
@@ -58,7 +56,7 @@ CREATE TABLE users (
   UNIQUE KEY `email` (`email`),
   KEY `fk_users_cities_1` (`city_id`),
   FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for tasks
@@ -79,8 +77,9 @@ CREATE TABLE tasks (
   PRIMARY KEY (`id`),
   KEY `fk_tasks_categories_1` (`category_id`),
   KEY `fk_tasks_statuses_1` (`status_id`),
-  FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)  FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),  
+  FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for bookmarks
@@ -95,7 +94,7 @@ CREATE TABLE bookmarks (
   KEY `fk_bookmarks_users_2` (`performer_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   FOREIGN KEY (`performer_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for events
@@ -113,7 +112,7 @@ CREATE TABLE events (
   KEY `fk_events_tasks_1` (`task_id`),
   FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for files
@@ -132,7 +131,7 @@ CREATE TABLE files (
   KEY `fk_files_users_1` (`user_id`),
   FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for messages
@@ -152,7 +151,7 @@ CREATE TABLE messages (
   FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
   FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`),
   FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for opinions
@@ -170,7 +169,7 @@ CREATE TABLE opinions (
   KEY `fk_opinions_users_2` (`performer_id`),
   FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`),
   FOREIGN KEY (`performer_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for replies
@@ -188,7 +187,7 @@ CREATE TABLE replies (
   KEY `fk_replies_tasks_1` (`task_id`),
   FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for user_categories
@@ -203,7 +202,7 @@ CREATE TABLE user_categories (
   KEY `fk_user_categories_categories_1` (`category_id`),
   FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for user_settings
@@ -229,5 +228,4 @@ CREATE TABLE user_settings (
   UNIQUE KEY `fk_user_settings_users_1` (`user_id`) USING BTREE,
   UNIQUE KEY `phone` (`phone`,`skype`,`messenger`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-SET FOREIGN_KEY_CHECKS=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
