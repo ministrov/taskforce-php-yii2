@@ -3,6 +3,10 @@
 namespace taskforce\logic;
 
 use DateTime;
+use taskforce\logic\actions\CancelAction;
+use taskforce\logic\actions\CompleteAction;
+use taskforce\logic\actions\DenyAction;
+use taskforce\logic\actions\ResponseAction;
 
 class AvailableActions
 {
@@ -54,12 +58,11 @@ class AvailableActions
   {
     $statusActions = $this->statusAllowedActions()[$this->status];
     $roleActions = $this->roleAllowedActions()[$role];
-    $rightRestrictions = $this->getRightsPairs();
 
     $allowedActions = array_intersect($statusActions, $roleActions);
 
-    $allowedActions = array_filter($allowedActions, function ($action) use ($rightRestrictions, $id) {
-      return $rightRestrictions[$action]($id);
+    $allowedActions = array_filter($allowedActions, function ($action) use ($id) {
+      return $action::checkRights($id, $this->performerId, $this->clientId);
     });
 
     return array_values($allowedActions);
@@ -68,10 +71,10 @@ class AvailableActions
   public function getNextStatus(string $action)
   {
     $map = [
-      self::ACTION_COMPLETE => self::STATUS_COMPLETE,
-      self::ACTION_CANCEL => self::STATUS_CANCEL,
-      self::ACTION_DENY => self::STATUS_CANCEL,
-      self::ACTION_RESPONSE => null
+      CompleteAction::class => self::STATUS_COMPLETE,
+      CancelAction::class => self::STATUS_CANCEL,
+      DenyAction::class => self::STATUS_CANCEL,
+      ResponseAction::class => null
     ];
 
     return $map[$action];
@@ -100,8 +103,8 @@ class AvailableActions
   private function roleAllowedActions()
   {
     $map = [
-      self::ROLE_CLIENT => [self::ACTION_CANCEL, self::ACTION_COMPLETE],
-      self::ROLE_PERFORMER => [self::ACTION_RESPONSE, self::ACTION_DENY]
+      self::ROLE_CLIENT => [CancelAction::class, CompleteAction::class],
+      self::ROLE_PERFORMER => [ResponseAction::class, DenyAction::class]
     ];
 
     return $map;
@@ -117,33 +120,9 @@ class AvailableActions
     $map = [
       self::STATUS_CANCEL => [],
       self::STATUS_COMPLETE => [],
-      self::STATUS_IN_PROGRESS => [self::ACTION_DENY, self::ACTION_COMPLETE],
-      self::STATUS_NEW => [self::ACTION_CANCEL, self::ACTION_RESPONSE],
+      self::STATUS_IN_PROGRESS => [DenyAction::class, CompleteAction::class],
+      self::STATUS_NEW => [CancelAction::class, ResponseAction::class],
       self::STATUS_EXPIRED => []
-    ];
-
-    return $map;
-  }
-
-  /**
-   * Проверяет доступность каждого действия для пользователя
-   * @return array
-   */
-  private function getRightsPairs()
-  {
-    $map = [
-      self::ACTION_RESPONSE => function ($id) {
-        return $id !== $this->performerId;
-      },
-      self::ACTION_DENY => function ($id) {
-        return $id == $this->performerId;
-      },
-      self::ACTION_CANCEL => function ($id) {
-        return $id == $this->clientId;
-      },
-      self::ACTION_COMPLETE => function ($id) {
-        return $id == $this->clientId;
-      }
     ];
 
     return $map;
