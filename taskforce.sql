@@ -76,3 +76,23 @@ CREATE TABLE `files` (
   CONSTRAINT `fk_files_tasks_1` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
   CONSTRAINT `fk_files_users_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for messages
+-- ----------------------------
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `recipient_id` int(11) unsigned NOT NULL,
+  `sender_id` int(11) unsigned NOT NULL,
+  `dt_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `message` text NOT NULL,
+  `task_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_messages_tasks_1` (`task_id`),
+  KEY `fk_messages_users_1` (`recipient_id`),
+  KEY `fk_messages_users_2` (`sender_id`),
+  CONSTRAINT `fk_messages_tasks_1` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
+  CONSTRAINT `fk_messages_users_1` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_messages_users_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
