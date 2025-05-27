@@ -2,7 +2,7 @@
 
 namespace taskforce\abstract;
 
-abstract class AbstractActions
+abstract class AbstractAction
 {
   abstract public static function getLabel();
   abstract public static function getIntervalName();
