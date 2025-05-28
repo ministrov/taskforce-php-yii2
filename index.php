@@ -6,13 +6,32 @@ use taskforce\logic\AvailableActions;
 use taskforce\logic\actions\ResponseAction;
 use taskforce\logic\actions\StatusActionException;
 
-error_reporting(E_ALL);
-
 try {
-  unknown();
-} catch (Error $error) {
-  print("Error:" . $error->getMessage());
+  // init bootstrapping phase 
+  $config_file_path = "config.php";
+  if (!file_exists($config_file_path)) {
+    throw new Exception("Configuration file not found.");
+  }
+
+  // continue execution of the bootstrapping phase 
+} catch (Exception $e) {
+  echo $e->getMessage();
+  die();
 }
+
+// try {
+//   intdiv(5, 0);
+// } catch (DivisionByZeroError $error) {
+//   print("На ноль делить нельзя!");
+// }
+
+// error_reporting(E_ALL);
+
+// try {
+//   unknown();
+// } catch (Error $error) {
+//   print("Error:" . $error->getMessage());
+// }
 
 try {
   $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
