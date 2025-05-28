@@ -1,6 +1,6 @@
 <?php
 
-namespace taskforce\logic\actions;
+namespace taskforce\exeptions;
 
 use Exception;
 use Throwable;

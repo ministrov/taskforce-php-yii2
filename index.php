@@ -4,33 +4,19 @@ ini_set('assert.exception', 1);
 
 use taskforce\logic\AvailableActions;
 use taskforce\logic\actions\ResponseAction;
-use taskforce\logic\actions\StatusActionException;
-
-try {
-  // init bootstrapping phase 
-  $config_file_path = "config.php";
-  if (!file_exists($config_file_path)) {
-    throw new Exception("Configuration file not found.");
-  }
-
-  // continue execution of the bootstrapping phase 
-} catch (Exception $e) {
-  echo $e->getMessage();
-  die();
-}
+use taskforce\exeptions\StatusActionException;
 
 // try {
-//   intdiv(5, 0);
-// } catch (DivisionByZeroError $error) {
-//   print("На ноль делить нельзя!");
-// }
+//   // init bootstrapping phase 
+//   $config_file_path = "config.php";
+//   if (!file_exists($config_file_path)) {
+//     throw new Exception("Configuration file not found.");
+//   }
 
-// error_reporting(E_ALL);
-
-// try {
-//   unknown();
-// } catch (Error $error) {
-//   print("Error:" . $error->getMessage());
+//   // continue execution of the bootstrapping phase 
+// } catch (Exception $e) {
+//   echo $e->getMessage();
+//   die();
 // }
 
 try {
@@ -39,7 +25,6 @@ try {
   $nextStatus = $strategy->getNextStatus(new ResponseAction('NonExistingAction'));
 } catch (StatusActionException $e) {
   echo $e->getErrorMessage();
-  // die($e->getErrorMessage());
 }
 
 

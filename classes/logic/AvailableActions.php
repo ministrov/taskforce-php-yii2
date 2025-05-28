@@ -103,6 +103,15 @@ class AvailableActions
     $this->status = $status;
   }
 
+  public function checkRole(string $role): void
+  {
+    $availableRoles = [self::ROLE_PERFORMER, self::ROLE_CLIENT];
+
+    if (!in_array($role, $availableRoles)) {
+      // throw new StatusActionException("Неивестная роль: $role");
+    }
+  }
+
   /**
    * Возвращает действия, доступные для каждой роли
    * @return array
