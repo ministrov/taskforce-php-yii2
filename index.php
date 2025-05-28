@@ -38,7 +38,8 @@ try {
 
   $nextStatus = $strategy->getNextStatus(new ResponseAction('NonExistingAction'));
 } catch (StatusActionException $e) {
-  die($e->getErrorMessage());
+  echo $e->getErrorMessage();
+  // die($e->getErrorMessage());
 }
 
 
