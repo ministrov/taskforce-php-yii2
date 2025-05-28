@@ -6,6 +6,14 @@ use taskforce\logic\AvailableActions;
 use taskforce\logic\actions\ResponseAction;
 use taskforce\logic\actions\StatusActionException;
 
+error_reporting(E_ALL);
+
+try {
+  unknown();
+} catch (Error $error) {
+  print("Error:" . $error->getMessage());
+}
+
 try {
   $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
