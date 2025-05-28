@@ -5,17 +5,17 @@ use taskforce\abstract\AbstractAction;
 
 class CancelAction extends AbstractAction
 {
-  public static function getLabel()
+  public static function getLabel(): string
   {
     return "Отменить";
   }
 
-  public static function getIntervalName()
+  public static function getIntervalName(): string
   {
     return "act_cancel";
   }
 
-  public static function checkRights($userId, $performerId, $clientId)
+  public static function checkRights($userId, $performerId, $clientId): bool
   {
     return $userId == $clientId;
   }
