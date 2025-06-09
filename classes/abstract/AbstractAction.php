@@ -4,7 +4,7 @@ namespace taskforce\abstract;
 
 abstract class AbstractAction
 {
-  abstract public static function getLabel();
-  abstract public static function getIntervalName();
-  abstract public static function checkRights($userId, $performedId, $clientId);
+  abstract public static function getLabel(): string;
+  abstract public static function getIntervalName(): string;
+  abstract public static function checkRights(int $userId, ?int $performedId, ?int $clientId): bool;
 }
